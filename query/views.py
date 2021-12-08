@@ -57,7 +57,7 @@ class AnswerQueryView(generics.CreateAPIView):
 
             serializer = AnswerQuerySerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save()
+                serializer.save(answered_by=request.user)
                 print("query answered")
                 return Response({"message": serializer.data}, status=status.HTTP_201_CREATED)
             # print("answered error")
