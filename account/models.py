@@ -3,7 +3,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
     AbstractBaseUser,
     Group)
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, EmailValidator
 
 
 class UserManager(BaseUserManager):
@@ -51,10 +51,17 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=50, blank=False, validators=[RegexValidator(
         regex='^[a-zA-Z ]*$',
         message='name must be Alphabetic only',
-        code='invalid_first_name'
+        code='invalid_name'
     )])
-    email = models.EmailField(max_length=100, blank=False, unique=True)
-    password = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100, blank=False, unique=True, validators=[EmailValidator(
+        message='please enter correct email format',
+        code='invalid_email'
+    )])
+    password = models.CharField(max_length=100, validators=[RegexValidator(
+        regex='^(?=.*[a-zA-Z]){8,}(?=.*\d.*\d)(?=.*[$@#!*?&].*[$@#!*?&])[A-Za-z\d$@#!*?&]{12,}$',
+        message='Password should contain minimum 8 letters, 2 numbers and 2 special chars',
+        code='invalid_password'
+    )])
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
