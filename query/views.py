@@ -2,15 +2,32 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from rest_framework.permissions import BasePermission
 from .serializers import *
 import logging
 
 logger = logging.getLogger(__name__)
 
 
+class UserOnly(BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_user():
+            return True
+        return False
+
+
+class MentorOnly(BasePermission):
+    def has_permission(self, request, view):
+        print(request.user)
+        if request.user.is_mentor():
+            print("yes mentor")
+            return True
+        print("no mentor : user")
+        return False
+
+
 class QueryView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, UserOnly, MentorOnly]
     authentication_classes = [JWTAuthentication]
     serializer_class = QuerySerializer
 
@@ -21,13 +38,6 @@ class QueryView(generics.CreateAPIView):
             if serializer.is_valid():
                 serializer.save(user_id=request.user.id)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-            # errors = dict()
-            # for key in serializer.errors:
-            #     if type(serializer.errors[key]) is dict:
-            #         for inner_key in serializer.errors[key]:
-            #             errors.__setitem__(key + "." + inner_key, serializer.errors[key][inner_key][0].capitalize())
-            #     else:
-            #         errors.__setitem__(key, serializer.errors[key][0].capitalize())
             return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             logger.error(e.__cause__)
@@ -36,12 +46,15 @@ class QueryView(generics.CreateAPIView):
 
 
 class AnswerQueryView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, MentorOnly]
     authentication_classes = [JWTAuthentication]
     serializer_class = AnswerQuerySerializer
 
     def post(self, request, *args, **kwargs):
         try:
+            print("Check mentor", request.user.is_mentor())
+            print("Check User", request.user.is_user())
+
             serializer = AnswerQuerySerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()

@@ -74,6 +74,16 @@ class User(AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
+    def is_mentor(self):
+        if self.groups.filter(name='Mentors').exists():
+            return True
+        return False
+
+    def is_user(self):
+        if self.groups.filter(name='Users').exists():
+            return True
+        return False
+
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'
