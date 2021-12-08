@@ -27,7 +27,7 @@ class MentorOnly(BasePermission):
 
 
 class QueryView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, UserOnly, MentorOnly]
+    permission_classes = [IsAuthenticated, UserOnly]
     authentication_classes = [JWTAuthentication]
     serializer_class = QuerySerializer
 

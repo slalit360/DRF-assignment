@@ -11,4 +11,4 @@ def send_notification(user_email, subject, message):
         sent = send_mail(subject, message, EMAIL_HOST_USER, [user_email], fail_silently=False)
         logger.info("Email sent on query answered :", sent)
     except Exception as e:
-        logger.error("failed to send email : ", e)
+        logger.error("failed to send email : not able to connect to backend")
