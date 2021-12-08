@@ -5,10 +5,10 @@ from .models import *
 class QuerySerializer(serializers.ModelSerializer):
     class Meta:
         model = Query
-        fields = '__all__'
+        fields = ('id', 'title', 'description', 'file')
 
 
 class AnswerQuerySerializer(serializers.ModelSerializer):
     class Meta:
         model = AnswerQuery
-        fields = '__all__'
+        fields = ('id', 'query', 'answer')

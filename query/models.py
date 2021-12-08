@@ -24,4 +24,4 @@ class AnswerQuery(models.Model):
     answered_by = models.ForeignKey(User, blank=False, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.query)
+        return str(self.query) + " -> " + str(self.answer)

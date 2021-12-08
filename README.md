@@ -9,14 +9,14 @@ The task is to Implement API endpoints to post questions to Mentor. As a part of
 Application shall have two roles: User and Mentor. (Mentor will be created by the System Admin)
 Please ensure you code is implemented using the following features
 1. Use customized user model and make email as username
-2. Use Django password validator. (Password should contain minimum 8 letters, 2 numbers and 2 special chars)
-3. Use JWT Authentication to protect the endpoints.
+2. Use Django password validator. (Password should contain minimum 8 letters, 2 numbers and 2 special chars) - implemented
+3. Use JWT Authentication to protect the endpoints. - implemented
 4. Use DRF Exception Hander and return generic error response.
-5. Use Serializers to validate the user request
-6. Use multiple roles (e.g. USER, MENTOR,..) and the endpoints can be accessed based on the roles.
-7. Use SMTP email background(Gmail) and signals for notification (Optional)
-8. Log every endpoint access (Optional)
-9. Use Swagger for API documentation (Optional)
+5. Use Serializers to validate the user request - implemented
+6. Use multiple roles (e.g. USER, MENTOR,..) and the endpoints can be accessed based on the roles. - implemented
+7. Use SMTP email background(Gmail) and signals for notification (Optional - implemented)
+8. Log every endpoint access (Optional - implemented)
+9. Use Swagger for API documentation (Optional - implemented)
 
 
 
@@ -41,5 +41,6 @@ Please ensure you code is implemented using the following features
 
 ![notification mail](email.JPG)
 
+**Note : Use Postman to hit query api's with jwt token**
 
 
