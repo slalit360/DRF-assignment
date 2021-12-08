@@ -6,4 +6,4 @@ RUN pip install -r /requirements.txt
 RUN mkdir /code
 WORKDIR /code
 COPY . /code/
-EXPOSE 8080
+EXPOSE 8000

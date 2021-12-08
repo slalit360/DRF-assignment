@@ -75,12 +75,6 @@ class User(AbstractBaseUser):
     def __str__(self):
         return str(self.name)
 
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
-
     def is_mentor(self):
         if self.groups.filter(name='Mentors').exists():
             return True
