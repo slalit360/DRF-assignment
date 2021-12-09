@@ -3,4 +3,4 @@ from .models import *
 
 # Register your models here.
 admin.site.register(Query)
-admin.site.register(AnswerQuery)
+admin.site.register(Answer)

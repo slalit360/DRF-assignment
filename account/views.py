@@ -34,8 +34,7 @@ class RegisterUser(generics.CreateAPIView):
                     user_db.groups.add(group)
                     user_db.save()
                     return_data = UserSerializers(user).data
-                    jwt_token = get_tokens_for_user(user)
-                    return_data['token'] = jwt_token['access']
+                    return_data['token'] = get_tokens_for_user(user)
                     response = Response(return_data, status=status.HTTP_201_CREATED)
                     return response
             return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -56,10 +55,9 @@ class UserLogin(generics.CreateAPIView):
                 request.user = user
                 user.last_login = timezone.now()
                 user.save()
-                jwt_token = get_tokens_for_user(user)
                 user_ser = UserSerializers(user, many=False)
                 ret_data = user_ser.data
-                ret_data['token'] = jwt_token['access']
+                ret_data['token'] = get_tokens_for_user(user)
                 resp = Response(ret_data, status=status.HTTP_200_OK)
                 return resp
             return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

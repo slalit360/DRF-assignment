@@ -21,10 +21,10 @@ from django.urls import path, include
 from assignment import settings
 
 urlpatterns = [
-                  path('admin/', admin.site.urls),
-                  path('api/', include('account.urls')),
-                  path('api/query/', include('query.urls')),
-                  path('api/docs/', include('docs.urls')),
-              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('admin/', admin.site.urls),
+    path('', include('account.urls')),
+    path('api/', include('query.urls')),
+    path('docs/', include('docs.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()
