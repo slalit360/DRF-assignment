@@ -1,60 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import (
-    BaseUserManager,
-    AbstractBaseUser,
-    Group)
+from django.contrib.auth.models import AbstractBaseUser, Group, AbstractUser
 from django.core.validators import RegexValidator, EmailValidator
 
-
-class UserManager(BaseUserManager):
-
-    def create_superuser(self, name, email, password=None):
-        if not name:
-            raise ValueError('Users must have a username')
-        if not password:
-            raise ValueError('Users must set the password')
-        if not email:
-            raise ValueError('Users must have an email address')
-
-        user = self.model(
-            name=name,
-            email=UserManager.normalize_email(email),
-        )
-        user.set_password(password)
-        user.is_admin = True
-        user.is_staff = True
-        user.save(using=self._db)
-        group = Group.objects.get(name='Mentors')
-        user.groups.add(group)
-        return user
-
-    def create_user(self, name, email, password=None):
-        if not name:
-            raise ValueError('Users must have a username')
-        if not password:
-            raise ValueError('Users must set the password')
-        if not email:
-            raise ValueError('Users must have an email address')
-
-        user = self.model(
-            name=name,
-            email=UserManager.normalize_email(email),
-        )
-        user.set_password(password)
-        user.is_admin = False
-        user.is_staff = True
-        user.save(using=self._db)
-        return user
+from account.manager import UserManager
 
 
 class User(AbstractBaseUser):
     name = models.CharField(max_length=50, validators=[RegexValidator(
         regex='^[a-zA-Z ]*$',
-        message='name must be Alphabetic only',
+        message='name must be alphabetic only',
         code='invalid_name'
     )])
     email = models.EmailField(max_length=100, unique=True, validators=[EmailValidator(
-        message='please enter correct email format',
+        message='invalid email entered',
         code='invalid_email'
     )])
     password = models.CharField(max_length=50, validators=[RegexValidator(
