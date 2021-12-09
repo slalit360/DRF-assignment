@@ -48,22 +48,21 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    name = models.CharField(max_length=50, blank=False, validators=[RegexValidator(
+    name = models.CharField(max_length=50, validators=[RegexValidator(
         regex='^[a-zA-Z ]*$',
         message='name must be Alphabetic only',
         code='invalid_name'
     )])
-    email = models.EmailField(max_length=100, blank=False, unique=True, validators=[EmailValidator(
+    email = models.EmailField(max_length=100, unique=True, validators=[EmailValidator(
         message='please enter correct email format',
         code='invalid_email'
     )])
-    password = models.CharField(max_length=100, validators=[RegexValidator(
+    password = models.CharField(max_length=50, validators=[RegexValidator(
         regex='^(?=.*[a-zA-Z]){8,}(?=.*\d.*\d)(?=.*[$@#!*?&].*[$@#!*?&])[A-Za-z\d$@#!*?&]{12,}$',
         message='Password should contain minimum 8 letters, 2 numbers and 2 special chars',
         code='invalid_password'
     )])
     is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     groups = models.ManyToManyField(Group)
 
@@ -84,6 +83,12 @@ class User(AbstractBaseUser):
         if self.groups.filter(name='Users').exists():
             return True
         return False
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
 
     class Meta:
         verbose_name = 'user'

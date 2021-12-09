@@ -34,8 +34,7 @@ class UserSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = (
-            'id', 'name', 'email', 'password')
+        fields = ('id', 'name', 'email', 'password')
         read_only_fields = ('id',)
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -52,6 +51,6 @@ class UserLoginSerializer(serializers.ModelSerializer):
         user = authenticate(
             email=attrs['username'], password=attrs['password'])
         if user is None:
-            raise serializers.ValidationError('Invalid email or password')
+            raise serializers.ValidationError('Invalid username or password')
         self.instance = user
         return user
