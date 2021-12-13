@@ -1,8 +1,8 @@
-from rest_framework import generics, status, mixins
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .permissions import UserOnly, MentorOnly
+from .permissions import *
 from .serializers import *
 import logging
 
@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class QueryView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated, UserOnly]
+    permission_classes = [IsAuthenticated, IsUser]
     authentication_classes = [JWTAuthentication]
     serializer_class = QuerySerializer
     queryset = Query.objects.all()
@@ -29,7 +29,7 @@ class QueryView(generics.ListCreateAPIView):
 
 
 class AnswerView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated, MentorOnly]
+    permission_classes = [IsAuthenticated, IsMentor]
     authentication_classes = [JWTAuthentication]
     serializer_class = AnswerSerializer
     queryset = Answer.objects.all()

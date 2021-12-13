@@ -1,14 +1,14 @@
 from rest_framework.permissions import BasePermission
 
 
-class UserOnly(BasePermission):
+class IsUser(BasePermission):
     def has_permission(self, request, view):
         if request.user.is_user():
             return True
         return False
 
 
-class MentorOnly(BasePermission):
+class IsMentor(BasePermission):
     def has_permission(self, request, view):
         print(request.user)
         if request.user.is_mentor():

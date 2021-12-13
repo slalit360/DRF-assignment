@@ -1,4 +1,5 @@
-django
-djangorestframework
+django~=4.0
+djangorestframework~=3.12.4
 djangorestframework_simplejwt
 drf-yasg
+django-simple-history~=3.0.0
