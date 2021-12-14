@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class QueryView(generics.ListCreateAPIView):
+class QueryAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated, IsUser]
     authentication_classes = [JWTAuthentication]
     serializer_class = QuerySerializer
@@ -28,7 +28,7 @@ class QueryView(generics.ListCreateAPIView):
             return Response({"message": e.__cause__}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class AnswerView(generics.ListCreateAPIView):
+class AnswerAPIView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated, IsMentor]
     authentication_classes = [JWTAuthentication]
     serializer_class = AnswerSerializer

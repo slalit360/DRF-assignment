@@ -19,7 +19,7 @@ def get_tokens_for_user(user):
     }
 
 
-class RegisterUser(generics.CreateAPIView):
+class RegisterUserAPIView(generics.CreateAPIView):
     serializer_class = RegisterUserSerializer
 
     def post(self, request, *args, **kwargs):
@@ -27,16 +27,10 @@ class RegisterUser(generics.CreateAPIView):
             serializer = RegisterUserSerializer(data=request.data)
             if serializer.is_valid():
                 self.perform_create(serializer)
-                user = User(**serializer.data)
-                if user:
-                    group = Group.objects.filter(name__exact='Users').first()
-                    user_db = User.objects.get(id=user.id)
-                    user_db.groups.add(group)
-                    user_db.save()
-                    return_data = UserSerializers(user).data
-                    return_data['token'] = get_tokens_for_user(user)
-                    response = Response(return_data, status=status.HTTP_201_CREATED)
-                    return response
+                return_data = serializer.data
+                return_data['token'] = get_tokens_for_user(serializer.instance)
+                response = Response(return_data, status=status.HTTP_201_CREATED)
+                return response
             return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             logger.error(e.__cause__)
@@ -44,20 +38,15 @@ class RegisterUser(generics.CreateAPIView):
             return Response({"message": e.__cause__}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class UserLogin(generics.CreateAPIView):
+class UserLoginAPIView(generics.GenericAPIView):
     serializer_class = UserLoginSerializer
 
     def post(self, request, *args, **kwargs):
         try:
             serializer = UserLoginSerializer(data=request.data)
             if serializer.is_valid():
-                user = serializer.instance
-                request.user = user
-                user.last_login = timezone.now()
-                user.save()
-                user_ser = UserSerializers(user, many=False)
-                ret_data = user_ser.data
-                ret_data['token'] = get_tokens_for_user(user)
+                ret_data = UserSerializers(serializer.instance, many=False).data
+                ret_data['token'] = get_tokens_for_user(serializer.instance)
                 resp = Response(ret_data, status=status.HTTP_200_OK)
                 return resp
             return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

@@ -2,8 +2,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path(r'query/', QueryView.as_view(), name="new-query"),
-    path(r'answer/', AnswerView.as_view(), name="answer-query"),
+    path(r'query/', QueryAPIView.as_view(), name="new-query"),
+    path(r'answer/', AnswerAPIView.as_view(), name="answer-query"),
 ]
 
 # from rest_framework import routers
