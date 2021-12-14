@@ -9,7 +9,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class QuerySerializer(serializers.ModelSerializer):
-    answer = serializers.StringRelatedField(many=True, read_only=True)
+    answer = AnswerSerializer(many=True, read_only=True)
 
     class Meta:
         model = Query

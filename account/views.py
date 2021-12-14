@@ -1,10 +1,7 @@
 from .serializers import *
 import logging
-from django.contrib.auth.models import Group
-from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.response import Response
-from account.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
 logger = logging.getLogger(__name__)
